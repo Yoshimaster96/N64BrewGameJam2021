@@ -19,6 +19,7 @@ extern const u16 playerGfx[];
 //COMMON ENEMIES
 extern const u16 leverGfx[];
 extern const u16 doorGfx[];
+extern const u16 springGfx[];
 //TODO
 
 #endif

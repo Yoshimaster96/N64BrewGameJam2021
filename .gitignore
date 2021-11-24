@@ -1,6 +1,11 @@
 *.o
 data/graphics/*.o
-main.n64
+data/sound/seqs/*.seq
+data/sound/midi.sbk
+data/sound/waves/*.aifc
+data/sound/*.ctl
+data/sound/*.tbl
+main.z64
 main.out
 spec.cvt
 session.xml

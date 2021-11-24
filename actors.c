@@ -55,6 +55,10 @@ const T_StaticSprite staticSpriteData[] = {
 	{	0,		0,		0x10000,	0x10000,	16,		32,			&doorGfx[0x0400]},		//Door open
 	{	0,		0,		0x10000,	0x10000,	16,		32,			NULL},					//(DUMMY FOR ALIGNMENT)
 	//20
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0000]},	//Trampoline frame 1
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0100]},	//Trampoline frame 1
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0200]},	//Trampoline frame 1
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0300]},	//Trampoline frame 1
 	//TODO
 };
 const T_CompoundSprite compoundSpriteData[] = {
@@ -137,6 +141,16 @@ const T_CompoundSprite compoundSpriteData[] = {
 	//TODO
 	//80
 	//TODO
+	//90
+	//TODO
+	//A0
+	//TODO
+	//B0
+	//TODO
+	//C0
+	//TODO
+	//D0
+	//TODO
 };
 const T_AnimatedSprite animatedSpriteData[] = {
 	//	FRAMES	ID
@@ -153,10 +167,10 @@ const T_AnimatedSprite animatedSpriteData[] = {
 	{	12,		0x0038},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	6,		0x000C},	//Lever up->down
+	{	6,		0x000D},
+	{	6,		0x000E},
+	{	0,		0xFFFF},
 	//10
 	{	12,		0x0040},	//Player idle
 	{	12,		0x0048},
@@ -170,11 +184,45 @@ const T_AnimatedSprite animatedSpriteData[] = {
 	{	12,		0x0078},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	6,		0x000E},	//Lever down->up
+	{	6,		0x000D},
+	{	6,		0x000C},
+	{	0,		0xFFFF},
 	//20
+	{	6,		0x001C},	//Door closed->open
+	{	6,		0x001D},
+	{	6,		0x001E},
+	{	0,		0xFFFF},
+	{	6,		0x001E},	//Door open->closed
+	{	6,		0x001D},
+	{	6,		0x001C},
+	{	0,		0xFFFF},
+	{	6,		0x0020},	//Trampoline
+	{	6,		0x0021},
+	{	6,		0x0022},
+	{	6,		0x0023},
+	{	6,		0x0022},
+	{	6,		0x0021},
+	{	0,		0xFFFF},
+	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//30
+	{	6,		0x0080},	//Player ledge grab
+	{	6,		0x0088},
+	{	6,		0x0090},
+	{	6,		0x0098},
+	{	6,		0x00C0},
+	{	0,		0xFFFF},
+	{	6,		0x00A0},	//Player ledge grab
+	{	6,		0x00A8},
+	{	6,		0x00B0},
+	{	6,		0x00B8},
+	{	6,		0x00C8},
+	{	0,		0xFFFF},
+	{	120,	0x00D0},	//Player skid
+	{	0,		0xFFFF},
+	{	120,	0x00D8},	//Player skid
+	{	0,		0xFFFF},
+	//40
 	//TODO
 };
 

@@ -87,7 +87,7 @@ void gm_play_main() {
 void gm_death_init() {
 	//Init death
 	actPlayer->vy = -0x40;
-	//TODO
+	load_bgm(4);
 	//Go to next task
 	gameMode = 0x09;
 	gameModeTimer = 0;
@@ -107,6 +107,7 @@ void gm_death_main() {
 void gm_goal_init() {
 	//Init goal
 	//TODO
+	load_bgm(5);
 	//Go to next task
 	gameMode = 0x0B;
 	gameModeTimer = 0;
@@ -203,6 +204,13 @@ void run_mode_func() {
 ////////////////
 //MAIN PROGRAM//
 ////////////////
+//SEGMENT DATA
+extern char _midiSegmentRomStart[],			_midiSegmentRomEnd[],		_midiSegmentStart[];
+extern char _midibankSegmentRomStart[],		_midibankSegmentRomEnd[],	_midibankSegmentStart[];
+extern char _miditableSegmentRomStart[],	_miditableSegmentRomEnd[],	_miditableSegmentStart[];
+//extern char _sfxbankSegmentRomStart[],		_sfxbankSegmentRomEnd[],	_sfxbankSegmentStart[];
+//extern char _sfxtableSegmentRomStart[],		_sfxtableSegmentRomEnd[],	_sfxtableSegmentStart[];
+
 //Main game loop
 void main_loop(int nPendingGfxTasks) {
 	if(nPendingGfxTasks<3) {
@@ -225,20 +233,34 @@ void main_loop(int nPendingGfxTasks) {
 //Entry point
 void mainproc() {
 	//Init GFX
+	/*switch(osTvType) {
+		case OS_TV_PAL: {
+			osViSetMode(&osViModePalLan1);
+			break;
+		}
+		case OS_TV_NTSC: {
+			osViSetMode(&osViModeNtscLan1);
+			break;
+		}
+		case OS_TV_MPAL: {
+			osViSetMode(&osViModeMpalLan1);
+			break;
+		}
+	}*/
 	nuGfxInit();
-	nuGfxFuncSet((NUGfxFunc)main_loop);
 	nuGfxDisplayOn();
 	//Init controller
 	joy1Pattern = nuContInit();
 	//Init audio
-	/*nuAuInit();
+	nuAuInit();
 	nuAuSeqPlayerBankSet(_midibankSegmentRomStart,
 		_midibankSegmentRomEnd-_midibankSegmentRomStart,
 		_miditableSegmentRomStart);
-	nuAuSndPlayerBankSet(_sfxbankSegmentRomStart,
+	nuAuSeqPlayerSeqSet(_midiSegmentRomStart);
+	/*nuAuSndPlayerBankSet(_sfxbankSegmentRomStart,
 		_sfxbankSegmentRomEnd-_sfxbankSegmentRomStart,
-		_sfxtableSegmentRomStart);
-	nuAuSeqPlayerSeqSet(_seqSegmentRomStart);*/
+		_sfxtableSegmentRomStart);*/
 	//Main game loop
+	nuGfxFuncSet((NUGfxFunc)main_loop);
 	while(1);
 }

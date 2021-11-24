@@ -20,30 +20,30 @@ beginseg
 	include "$(ROOT)/usr/lib/PR/gspF3DLX2.Rej.fifo.o"
 	include "$(ROOT)/usr/lib/PR/gspS2DEX2.fifo.o"
 endseg
-/*beginseg
-	name "seq"
+beginseg
+	name "midi"
 	flags RAW
 	include "data/sound/midi.sbk"
 endseg
 beginseg
 	name "midibank"
 	flags RAW
-	include "data/sound/wave.ctl" 
+	include "data/sound/midi.ctl"
 endseg
 beginseg
 	name "miditable"
 	flags RAW
-	include "data/sound/wave.tbl" 
+	include "data/sound/midi.tbl"
 endseg
-beginseg
+/*beginseg
 	name "sfxbank"
 	flags RAW
-	include "data/sound/se.ctl" 
+	include "data/sound/sfx.ctl"
 endseg
 beginseg
 	name "sfxtable"
 	flags RAW
-	include "data/sound/se.tbl" 
+	include "data/sound/sfx.tbl"
 endseg*/
 
 //Common and mode graphics
@@ -104,9 +104,9 @@ endseg
 beginwave
 	name "main"
 	include "code"
-	//include "seq"
-	//include "midibank"
-	//include "miditable"
+	include "midi"
+	include "midibank"
+	include "miditable"
 	//include "sfxbank"
 	//include "sfxtable"
 	include "gfx_common"

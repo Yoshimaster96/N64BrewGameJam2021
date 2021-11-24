@@ -122,6 +122,7 @@ void load_level() {
 	memset(levelActorStatus,0,0x1000);
 	memset(levelSwitchStatus,0,0x40);
 	memset(actorList,0,0x100*sizeof(T_Actor));
+	load_bgm(8+levelNum);
 	//Init screen scroll
 	camx = 0;
 	camy = 0;
