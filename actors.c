@@ -21,12 +21,12 @@ typedef struct {
 const T_StaticSprite staticSpriteData[] = {
 	//	OFFSX	OFFSY	SCALEX		SCALEY		WIDTH	HEIGHT		GRAPHIC
 	//00
-	{	0,		0,		0x10000,	0x10000,	16,		16,			bmp_test_red},			//TEST
-	{	0,		0,		0x10000,	0x10000,	16,		16,			NULL},					//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x10000,	0x10000,	16,		16,			test16Gfx},				//TEST 16
+	{	0,		0,		0x10000,	0x10000,	8,		8,			test8Gfx},				//TEST 8
 	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x0000]},	//Player head
 	{	0,		0,		0x10000,	0x10000,	8,		12,			&playerGfx[0x0080]},	//Player body
 	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x0100]},	//Player foot normal
-	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x0140]},	//Player hand jump
+	{	0,		0,		0x10000,	0x10000,	8,		8,			NULL},					//(DUMMY FOR ALIGNMENT)
 	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x0180]},	//Player foot left
 	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x01C0]},	//Player foot right
 	{	0,		0,		0x10000,	0x10000,	8,		8,			&playerGfx[0x0200]},	//Player hand normal left
@@ -38,12 +38,12 @@ const T_StaticSprite staticSpriteData[] = {
 	{	0,		0,		0x10000,	0x10000,	16,		16,			&leverGfx[0x0200]},		//Lever down
 	{	0,		0,		0x10000,	0x10000,	16,		16,			NULL},					//(DUMMY FOR ALIGNMENT)
 	//10
-	{	0,		0,		0x10000,	0x10000,	16,		16,			NULL},					//(DUMMY FOR ALIGNMENT)
-	{	0,		0,		0x10000,	0x10000,	16,		16,			NULL},					//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0xFFFF0000,	0x10000,	16,		16,			NULL},					//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			NULL},					//(DUMMY FOR ALIGNMENT)
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0000]},	//Player head
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		12,			&playerGfx[0x0080]},	//Player body
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0100]},	//Player foot normal
-	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0140]},	//Player hand jump
+	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			NULL},					//(DUMMY FOR ALIGNMENT)
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0180]},	//Player foot left
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x01C0]},	//Player foot right
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0200]},	//Player hand normal left
@@ -56,100 +56,303 @@ const T_StaticSprite staticSpriteData[] = {
 	{	0,		0,		0x10000,	0x10000,	16,		32,			NULL},					//(DUMMY FOR ALIGNMENT)
 	//20
 	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0000]},	//Trampoline frame 1
-	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0100]},	//Trampoline frame 1
-	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0200]},	//Trampoline frame 1
-	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0300]},	//Trampoline frame 1
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0100]},	//Trampoline frame 2
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0200]},	//Trampoline frame 3
+	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0300]},	//Trampoline frame 4
 	//TODO
 };
 const T_CompoundSprite compoundSpriteData[] = {
 	//	OFFSX	OFFSY	ID
-	//00
-	{	0,		0,		0x0007},	//Player idle frame 1
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	//000
+	{	6,		9,		0x0004},	//Player idle frame 1
+	{	7,		3,		0x0009},
+	{	4,		-10,	0x0002},
+	{	4,		-2,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		3,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0,		0x0007},	//Player idle frame 2
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	{	6,		9,		0x0004},	//Player idle frame 2
+	{	7,		3,		0x0009},
+	{	4,		-9,		0x0002},
+	{	4,		-1,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		3,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	//10
-	{	0,		0,		0x0007},	//Player idle frame 3
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	//010
+	{	6,		9,		0x0004},	//Player idle frame 3
+	{	7,		4,		0x0009},
+	{	4,		-9,		0x0002},
+	{	4,		-1,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		4,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0,		0x0007},	//Player idle frame 4
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	{	6,		9,		0x0004},	//Player idle frame 4
+	{	7,		4,		0x0009},
+	{	4,		-10,	0x0002},
+	{	4,		-2,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		4,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	//20
-	{	0,		0,		0x0007},	//Player run frame 1
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	//020
+	{	6,		9,		0x0004},	//Player run frame 1
+	{	7,		3,		0x0009},
+	{	4,		-10,	0x0002},
+	{	4,		-2,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		3,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0,		0x0007},	//Player run frame 2
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	{	9,		9,		0x0007},	//Player run frame 2
+	{	5,		3,		0x0009},
+	{	4,		-9,		0x0002},
+	{	4,		-1,		0x0003},
+	{	1,		9,		0x0006},
+	{	4,		3,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	//30
-	{	0,		0,		0x0007},	//Player run frame 3
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	//030
+	{	6,		9,		0x0004},	//Player run frame 3
+	{	7,		3,		0x0009},
+	{	4,		-10,	0x0002},
+	{	4,		-2,		0x0003},
+	{	3,		9,		0x0004},
+	{	2,		3,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	0,		0,		0x0007},	//Player run frame 4
-	{	0,		0,		0x0009},
-	{	0,		0,		0x0002},
-	{	0,		0,		0x0003},
-	{	0,		0,		0x0006},
-	{	0,		0,		0x0008},
+	{	4,		9,		0x0006},	//Player run frame 4
+	{	9,		2,		0x0009},
+	{	4,		-9,		0x0002},
+	{	4,		-1,		0x0003},
+	{	6,		9,		0x0007},
+	{	0,		2,		0x0008},
 	{	0,		0,		0xFFFF},
 	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	//40
-	//TODO
-	//50
-	//TODO
-	//60
-	//TODO
-	//70
-	//TODO
-	//80
-	//TODO
-	//90
-	//TODO
-	//A0
-	//TODO
-	//B0
-	//TODO
-	//C0
-	//TODO
-	//D0
+	//040
+	{	2,		9,		0x0014},	//Player idle frame 1
+	{	1,		3,		0x0019},
+	{	4,		-10,	0x0012},
+	{	4,		-2,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		3,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	2,		9,		0x0014},	//Player idle frame 2
+	{	1,		3,		0x0019},
+	{	4,		-9,		0x0012},
+	{	4,		-1,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		3,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//050
+	{	2,		9,		0x0014},	//Player idle frame 3
+	{	1,		4,		0x0019},
+	{	4,		-9,		0x0012},
+	{	4,		-1,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		4,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	2,		9,		0x0014},	//Player idle frame 4
+	{	1,		4,		0x0019},
+	{	4,		-10,	0x0012},
+	{	4,		-2,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		4,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//060
+	{	2,		9,		0x0014},	//Player run frame 1
+	{	1,		3,		0x0019},
+	{	4,		-10,	0x0012},
+	{	4,		-2,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		3,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	-1,		9,		0x0017},	//Player run frame 2
+	{	3,		3,		0x0019},
+	{	4,		-9,		0x0012},
+	{	4,		-1,		0x0013},
+	{	7,		9,		0x0016},
+	{	4,		3,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//070
+	{	2,		9,		0x0014},	//Player run frame 3
+	{	1,		3,		0x0019},
+	{	4,		-10,	0x0012},
+	{	4,		-2,		0x0013},
+	{	5,		9,		0x0014},
+	{	6,		3,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	4,		9,		0x0016},	//Player run frame 4
+	{	-1,		2,		0x0019},
+	{	4,		-9,		0x0012},
+	{	4,		-1,		0x0013},
+	{	2,		9,		0x0017},
+	{	8,		2,		0x0018},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//080
+	{	0,		0,		0x0000},	//Player ledge grab frame 1 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player ledge grab frame 2 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//090
+	{	0,		0,		0x0000},	//Player ledge grab frame 3 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player ledge grab frame 4 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0A0
+	{	0,		0,		0x0000},	//Player ledge grab frame 1 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player ledge grab frame 2 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0B0
+	{	0,		0,		0x0000},	//Player ledge grab frame 3 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player ledge grab frame 4 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0C0
+	{	0,		0,		0x0000},	//Player ledge grab frame 5 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player ledge grab frame 5 (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0D0
+	{	0,		0,		0x0000},	//Player skid (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player skid (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0E0
+	{	0,		0,		0x0000},	//Player jump (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player jump (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//0F0
+	{	0,		0,		0x0000},	//Player fall (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player fall (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//100
+	{	0,		0,		0x0000},	//Player wall slide (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0,		0x0000},	//Player wall slide (PLACEHOLDER)
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},
+	{	0,		0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	//110
 	//TODO
 };
 const T_AnimatedSprite animatedSpriteData[] = {
@@ -161,10 +364,10 @@ const T_AnimatedSprite animatedSpriteData[] = {
 	{	12,		0x0018},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	12,		0x0020},	//Player run
-	{	12,		0x0028},
-	{	12,		0x0030},
-	{	12,		0x0038},
+	{	6,		0x0020},	//Player run
+	{	6,		0x0028},
+	{	6,		0x0030},
+	{	6,		0x0038},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
 	{	6,		0x000C},	//Lever up->down
@@ -178,10 +381,10 @@ const T_AnimatedSprite animatedSpriteData[] = {
 	{	12,		0x0058},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
-	{	12,		0x0060},	//Player run
-	{	12,		0x0068},
-	{	12,		0x0070},
-	{	12,		0x0078},
+	{	6,		0x0060},	//Player run
+	{	6,		0x0068},
+	{	6,		0x0070},
+	{	6,		0x0078},
 	{	0,		0xFFFF},
 	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
 	{	6,		0x000E},	//Lever down->up
@@ -223,6 +426,23 @@ const T_AnimatedSprite animatedSpriteData[] = {
 	{	120,	0x00D8},	//Player skid
 	{	0,		0xFFFF},
 	//40
+	{	120,	0x00E0},	//Player jump
+	{	0,		0xFFFF},
+	{	120,	0x00E8},	//Player jump
+	{	0,		0xFFFF},
+	{	120,	0x00F0},	//Player fall
+	{	0,		0xFFFF},
+	{	120,	0x00F8},	//Player fall
+	{	0,		0xFFFF},
+	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	0,		0xFFFF},	//(DUMMY FOR ALIGNMENT)
+	{	120,	0x0100},	//Player wall slide
+	{	0,		0xFFFF},
+	{	120,	0x0108},	//Player wall slide
+	{	0,		0xFFFF},
+	//50
 	//TODO
 };
 
@@ -353,6 +573,7 @@ void ah_draw(T_Actor * a) {
 				(a->x>>4)+compoundSpriteData[i].offsX+staticSpriteData[i2].offsX,
 				(a->y>>4)+compoundSpriteData[i].offsY+staticSpriteData[i2].offsY,
 				i2);
+			i++;
 		}
 	} else {
 		//Static sprite
@@ -425,33 +646,54 @@ void actor_player_init(T_Actor * self) {
 	//Mark inited
 	self->inited = 1;
 	//Init collision info
-	self->cx1 =  0<<4;
-	self->cy1 =  0<<4;
-	self->cx2 = 16<<4;
+	self->cx1 =  2<<4;
+	self->cy1 = -8<<4;
+	self->cx2 = 14<<4;
 	self->cy2 = 16<<4;
 	//Init animation
-	self->sprId = 0;
-	self->sprMode = 0;
+	self->sprId = 0x00;
+	self->sprMode = 3;
 	//Init misc.
-	playerHP = 0x10;
+	playerHP = 12;
 	playerMode = 0xFF;
 }
 void actor_player_main(T_Actor * self) {
 	int ax,ax2;
 	u8 t1,t2;
+	u16 curAnim,oldAnim;
 	//Move horizontally
+	oldAnim = self->sprId;
 	ax = joy1Data.stick_x>>5;
 	     if(ax<-2) ax = -2;
 	else if(ax> 2) ax =  2;
 	if(ax) self->temps[2] = ax;
 	if(playerMode!=0xFF) ax = 0;
 	if(ax==0) {
-		     if(self->vx<0) self->vx += 2;
-		else if(self->vx>0) self->vx -= 2;
+		     if(self->vx<0) {
+			self->vx += 2;
+			if(self->vx>0) self->vx = 0;
+			 }
+		else if(self->vx>0) {
+			self->vx -= 2;
+			if(self->vx<0) self->vx = 0;
+		}
 	} else {
 		self->vx += ax;
 		     if(self->vx<-0x20) self->vx = -0x20;
 		else if(self->vx> 0x20) self->vx =  0x20;
+	}
+	if(self->temps[0]&8) {
+		if(self->vx) {
+			     if(ax<0 && self->vx>0 && self->vx< 0x10) curAnim = 0x3C;
+			else if(ax>0 && self->vx<0 && self->vx>-0x10) curAnim = 0x3C;
+			else curAnim = 0x06;
+		}
+		else curAnim = 0x00;
+	} else {
+		     if(self->temps[0]&1 && ax<0) curAnim = 0x4C;
+		else if(self->temps[0]&2 && ax>0) curAnim = 0x4C;
+		else if(self->vy>0) curAnim = 0x44;
+		else                curAnim = 0x40;
 	}
 	//Handle jumping
 	if(joy1ButtonDown&A_BUTTON && playerMode==0xFF) {
@@ -474,25 +716,28 @@ void actor_player_main(T_Actor * self) {
 	//Handle ledge grab
 	if((self->temps[1]&0xFF)<1 && (self->temps[0]&8)==0 && self->y>0x100) {
 			 if(self->temps[0]&1 && ax<0) {
-			if(levelTsProps[ah_gettile(self->x-0x100,self->y-0x100)]==0 &&
-			   levelTsProps[ah_gettile(self->x-0x100,self->y)]) {
+			if(levelTsProps[ah_gettile(self->x-0xE0,self->y-0x100)]==0 &&
+			   levelTsProps[ah_gettile(self->x-0xE0,self->y)]) {
 				//Init ledge grab state
 				self->temps[1] = 0x801;
 				self->x &= ~0xFF;
+				self->x += 0xE0;
 				self->y &= ~0xFF;
 			}
 		}
 		else if(self->temps[0]&2 && ax>0) {
-			if(levelTsProps[ah_gettile(self->x+0x100,self->y-0x100)]==0 &&
-			   levelTsProps[ah_gettile(self->x+0x100,self->y)]) {
+			if(levelTsProps[ah_gettile(self->x+0xE0,self->y-0x100)]==0 &&
+			   levelTsProps[ah_gettile(self->x+0xE0,self->y)]) {
 				//Init ledge grab state
 				self->temps[1] = 0x001;
 				self->x &= ~0xFF;
+				self->x += 0x20;
 				self->y &= ~0xFF;
 			}
 		}
 	}
 	if(self->temps[1]) {
+		curAnim = 0x30;
 		//Update position on certain frames
 		switch(self->temps[1]&0xFF) {
 			case 5: {
@@ -542,8 +787,8 @@ void actor_player_main(T_Actor * self) {
 	if(self->vx<0 && self->x<0) {
 		self->x = 0;
 		self->vx = 0;
-	} else if(self->vx>0 && ((self->x>>4)+16)>levelWidth) {
-		self->x = (levelWidth-16)<<4;
+	} else if(self->vx>0 && ((self->x>>4)+0x10)>levelWidth) {
+		self->x = (levelWidth-0x10)<<4;
 		self->vx = 0;
 	}
 	//Check vertical bounds collision
@@ -561,7 +806,43 @@ void actor_player_main(T_Actor * self) {
 		self->temps[0] = 0;
 	}
 	//Animate player
-	//TODO
+	if(self->temps[2]<0) {
+		switch(curAnim) {
+			case 0x00: {
+				curAnim = 0x10;
+				break;
+			}
+			case 0x06: {
+				curAnim = 0x16;
+				break;
+			}
+			case 0x30: {
+				curAnim = 0x36;
+				break;
+			}
+			case 0x3C: {
+				curAnim = 0x3E;
+				break;
+			}
+			case 0x40: {
+				curAnim = 0x42;
+				break;
+			}
+			case 0x44: {
+				curAnim = 0x46;
+				break;
+			}
+			case 0x4C: {
+				curAnim = 0x4E;
+				break;
+			}
+		}
+	}
+	self->sprId = curAnim;
+	if(curAnim!=oldAnim) {
+		self->animFrame = 0;
+		self->animTimer = 0;
+	}
 	ah_draw(self);
 }
 //Lever
@@ -696,7 +977,7 @@ void actor_ready_main(T_Actor * self) {
 	if(ax<0x20) ax = 0x20;
 	ah_drawtext(ax,0x60,levelNameData[levelNum]);
 	//Draw player lives
-	sprintf(strBuf,"$ %02d",playerLives);
+	sprintf(strBuf,"$*%02d",playerLives);
 	ax = (0xE0+0xA0)-((self->temps[0]-0x30)<<3);
 	if(ax<0xA0) ax = 0xA0;
 	self->y = ax<<4;
@@ -809,9 +1090,16 @@ void update_actors() {
 		sprintf(strBuf,"%08d",playerScore);
 		ah_drawtext(camx,camy,strBuf);
 		//Draw lives
-		sprintf(strBuf,"$ %02d",playerLives);
+		sprintf(strBuf,"$*%02d",playerLives);
 		ah_drawtext(0x100+camx,camy,strBuf);
 		//Draw HP
-		//TODO
+		memset(strBuf,0,16);
+		for(i=0; i<6; i++) {
+			thisId = playerHP-(i<<1);
+			     if(thisId<=0) strBuf[i] = 0x3C;
+			else if(thisId==1) strBuf[i] = 0x3D;
+			else               strBuf[i] = 0x3E;
+		}
+		ah_drawtext(0xE0+camx,0x10+camy,strBuf);
 	}
 }

@@ -92,10 +92,10 @@ void load_segment(int segId) {
 void update_gfx() {
 	int i;
 	//Handle camera (pre-process!)
-	if(gfxUseBgL2) {
-		//gfxBgLayer2.s.objX -= camxL2<<2;
-		//gfxBgLayer2.s.objY -= camyL2<<2;
-	}
+	/*if(gfxUseBgL2) {
+		gfxBgLayer2.s.objX -= camxL2<<2;
+		gfxBgLayer2.s.objY -= camyL2<<2;
+	}*/
 	for(i=0; i<gfxUseBgL1; i++) {
 		if(gfxDataBgL1[i]) {
 			gfxBgLayer1[i].s.objX -= camxL1<<2;
@@ -125,10 +125,10 @@ void update_gfx() {
 	//Init RDP for normal use
 	gSPDisplayList(dlPtr++,OS_K0_TO_PHYSICAL(gfxInit2));
 	//Generate display list for BG layer 2
-	if(gfxUseBgL2) {
+	/*if(gfxUseBgL2) {
 		gDPPipeSync(dlPtr++);
 		gSPBgRect1Cyc(dlPtr++,OS_K0_TO_PHYSICAL(&gfxBgLayer2));
-	}
+	}*/
 	//Generate display list for BG layer 1
 	for(i=0; i<gfxUseBgL1; i++) {
 		if(gfxDataBgL1[i]) {
@@ -161,10 +161,10 @@ void update_gfx() {
 	//Swap buffers
 	bufferId ^= 1;
 	//Handle camera (post-process!)
-	if(gfxUseBgL2) {
-		//gfxBgLayer2.s.objX += camxL2<<2;
-		//gfxBgLayer2.s.objY += camyL2<<2;
-	}
+	/*if(gfxUseBgL2) {
+		gfxBgLayer2.s.objX += camxL2<<2;
+		gfxBgLayer2.s.objY += camyL2<<2;
+	}*/
 	for(i=0; i<gfxUseBgL1; i++) {
 		if(gfxDataBgL1[i]) {
 			gfxBgLayer1[i].s.objX += camxL1<<2;

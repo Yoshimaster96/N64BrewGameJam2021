@@ -7,11 +7,14 @@
 
 //Variables
 //GRAPHICS TEST DATA
-extern const u16 bmp_test_red[];
+extern const u16 test8Gfx[];
+extern const u16 test16Gfx[];
 
 //UI GRAPHICS
 extern const u16 fontGfx[];
 extern const u16 * fontAsciiTable[];
+extern const u16 iconHpGfx[];
+extern const u16 iconLivesGfx[];
 //EFFECT GRAPHICS
 //TODO
 //PLAYER GRAPHICS

@@ -100,6 +100,35 @@ void clear_level() {
 	camxL2 = camx>>1;
 	camyL2 = camy>>1;
 }
+//Focus camera
+void focus_camera() {
+	int fx,fy;
+	//Focus camera and update scroll
+	fx = (actPlayer->x>>4)+8;
+	fy = (actPlayer->y>>4)+8;
+	if(levelWidth<=320) {
+		camx = (320-levelWidth)>>1;
+	} else {
+		if(fx<160) {
+			camx = 0;
+		} else if(fx>(levelWidth-160)) {
+			camx = levelWidth-320;
+		} else {
+			camx = fx-160;
+		}
+	}
+	if(levelHeight<=240) {
+		camy = 240-levelHeight;
+	} else {
+		if(fy<120) {
+			camy = 0;
+		} else if(fy>(levelHeight-120)) {
+			camy = levelHeight-240;
+		} else {
+			camy = fy-120;
+		}
+	}
+}
 //Load level
 void load_level() {
 	int idx;
@@ -124,12 +153,11 @@ void load_level() {
 	memset(actorList,0,0x100*sizeof(T_Actor));
 	load_bgm(8+levelNum);
 	//Init screen scroll
-	camx = 0;
-	camy = 0;
+	focus_camera();
 	//Init BG layers 1 and 2
 	for(j=0; j<=15; j++) {
 		for(i=0; i<=20; i++) {
-			gfxDataBgL1[gfxUseBgL1] = levelTileset[levelTilemap[i+(j*(levelWidth>>4))]];
+			gfxDataBgL1[gfxUseBgL1] = levelTileset[levelTilemap[(i+(camx>>4))+((j+(camy>>4))*(levelWidth>>4))]];
 			gfxBgLayer1[gfxUseBgL1].s.objX			= i<<6;
 			gfxBgLayer1[gfxUseBgL1].s.scaleW		= 1<<10;
 			gfxBgLayer1[gfxUseBgL1].s.imageW		= 16<<5;
@@ -147,6 +175,7 @@ void load_level() {
 			gfxUseBgL1++;
 		}
 	}
+	//TODO
 	//Init player
 	actorList[0].id		= 0x0001;
 	actorList[0].param	= 0x00;
@@ -173,31 +202,8 @@ void update_level() {
 			levelActorStatus[i] = 0;
 		}
 	}
-	//Focus camera and update scroll
-	fx = (actPlayer->x>>4)+8;
-	fy = (actPlayer->y>>4)+8;
-	if(levelWidth<=320) {
-		camx = (320-levelWidth)>>1;
-	} else {
-		if(fx<160) {
-			camx = 0;
-		} else if(fx>(levelWidth-160)) {
-			camx = levelWidth-320;
-		} else {
-			camx = fx-160;
-		}
-	}
-	if(levelHeight<=240) {
-		camy = 240-levelHeight;
-	} else {
-		if(fy<120) {
-			camy = 0;
-		} else if(fy>(levelHeight-120)) {
-			camy = levelHeight-240;
-		} else {
-			camy = fy-120;
-		}
-	}
+	//Focus camera
+	focus_camera();
 	//Update BG layers 1 and 2
 	if((camxPrev&(~0xF))!=(camx&(~0xF))) {
 		if(camx>camxPrev) {
@@ -231,6 +237,7 @@ void update_level() {
 			gfxBgLayer1[idx].s.objY = fy<<6;
 		}
 	}
+	//TODO
 	//Update screen scroll
 	camxL1 = camx;
 	camyL1 = camy;
