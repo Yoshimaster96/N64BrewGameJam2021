@@ -12,12 +12,11 @@ typedef struct {
 	int width,height;
 	T_LevelActor * actors;
 	int startX,startY;
-	//int camX,camY;
 } T_LevelHeader;
 const T_LevelHeader headerData[] = {
 	//	BGIMG			TILESET			TSPROPS			TILEMAP			WIDTH	HEIGHT	ACTORS			STARTX	STARTY
 	//1
-	{	level1BgImg,	level1Tileset,	level1TsProps,	level1Tilemap,	40,		15,		level1Actors,	0x0010,	0x00C0},
+	{	level1BgImg,	level1Tileset,	level1TsProps,	level1Tilemap,	120,	32,		level1Actors,	0x0030,	0x01E0},
 	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
 	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
 	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
@@ -103,7 +102,7 @@ void clear_level() {
 //Focus camera
 void focus_camera() {
 	int fx,fy;
-	//Focus camera and update scroll
+	//Focus camera
 	fx = (actPlayer->x>>4)+8;
 	fy = (actPlayer->y>>4)+8;
 	if(levelWidth<=320) {
@@ -128,6 +127,11 @@ void focus_camera() {
 			camy = fy-120;
 		}
 	}
+	//Update screen scroll
+	camxL1 = camx;
+	camyL1 = camy;
+	camxL2 = camx>>1;
+	camyL2 = camy>>1;
 }
 //Load level
 void load_level() {
@@ -148,21 +152,30 @@ void load_level() {
 	levelWidth		= headerData[idx].width<<4;
 	levelHeight		= headerData[idx].height<<4;
 	levelActors		= headerData[idx].actors;
-	memset(levelActorStatus,0,0x1000);
+	memset(levelActorStatus,0,0x100);
 	memset(levelSwitchStatus,0,0x40);
 	memset(actorList,0,0x100*sizeof(T_Actor));
 	load_bgm(8+levelNum);
+	//Init player
+	actorList[0].id		= 0x0001;
+	actorList[0].param	= 0x00;
+	actorList[0].x		= headerData[levelNum].startX<<4;
+	actorList[0].y		= headerData[levelNum].startY<<4;
+	actorList[0].link	= 0xFFFF;
+	actPlayer = &actorList[0];
 	//Init screen scroll
 	focus_camera();
 	//Init BG layers 1 and 2
 	for(j=0; j<=15; j++) {
 		for(i=0; i<=20; i++) {
-			gfxDataBgL1[gfxUseBgL1] = levelTileset[levelTilemap[(i+(camx>>4))+((j+(camy>>4))*(levelWidth>>4))]];
-			gfxBgLayer1[gfxUseBgL1].s.objX			= i<<6;
+			idx  =  i+(camx>>4);
+			idx += (j+(camy>>4))*(levelWidth>>4);
+			gfxDataBgL1[gfxUseBgL1] = levelTileset[levelTilemap[idx]];
+			gfxBgLayer1[gfxUseBgL1].s.objX			= (i+(camx>>4))<<6;
 			gfxBgLayer1[gfxUseBgL1].s.scaleW		= 1<<10;
 			gfxBgLayer1[gfxUseBgL1].s.imageW		= 16<<5;
 			gfxBgLayer1[gfxUseBgL1].s.paddingX		= 0;
-			gfxBgLayer1[gfxUseBgL1].s.objY			= j<<6;
+			gfxBgLayer1[gfxUseBgL1].s.objY			= (j+(camy>>4))<<6;
 			gfxBgLayer1[gfxUseBgL1].s.scaleH		= 1<<10;
 			gfxBgLayer1[gfxUseBgL1].s.imageH		= 16<<5;
 			gfxBgLayer1[gfxUseBgL1].s.paddingY		= 0;
@@ -175,14 +188,9 @@ void load_level() {
 			gfxUseBgL1++;
 		}
 	}
+	gfxDataBgL2 = levelBgImage;
 	//TODO
-	//Init player
-	actorList[0].id		= 0x0001;
-	actorList[0].param	= 0x00;
-	actorList[0].x		= headerData[levelNum].startX<<4;
-	actorList[0].y		= headerData[levelNum].startY<<4;
-	actorList[0].link	= 0xFFFF;
-	actPlayer = &actorList[0];
+	gfxUseBgL2++;
 }
 //Update level
 void update_level() {
@@ -202,7 +210,7 @@ void update_level() {
 			levelActorStatus[i] = 0;
 		}
 	}
-	//Focus camera
+	//Update screen scroll
 	focus_camera();
 	//Update BG layers 1 and 2
 	if((camxPrev&(~0xF))!=(camx&(~0xF))) {
@@ -237,10 +245,4 @@ void update_level() {
 			gfxBgLayer1[idx].s.objY = fy<<6;
 		}
 	}
-	//TODO
-	//Update screen scroll
-	camxL1 = camx;
-	camyL1 = camy;
-	camxL2 = camx>>1;
-	camyL2 = camy>>1;
 }

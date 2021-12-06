@@ -5,7 +5,7 @@ data/sound/midi.sbk
 data/sound/waves/*.aifc
 data/sound/*.ctl
 data/sound/*.tbl
+main.elf
 main.z64
-main.out
 spec.cvt
 session.xml

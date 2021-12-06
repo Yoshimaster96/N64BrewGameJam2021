@@ -27,7 +27,7 @@ LDFLAGS	= $(MKDEPOPT) -L$(LIB) -L$(NUSYSLIBDIR) $(NUAUDIOLIB) -lnusys -lgultra -
 OPTIMIZER	= -O2
 
 #output
-APP		= main.out
+APP		= main.elf
 TARGETS	= main.z64
 
 ###################

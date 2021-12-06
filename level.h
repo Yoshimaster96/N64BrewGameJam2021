@@ -15,7 +15,7 @@ u8 * levelTsProps;
 u8 * levelTilemap;
 u32 levelWidth,levelHeight;
 T_LevelActor * levelActors;
-u8 levelActorStatus[0x1000];
+u8 levelActorStatus[0x100];
 u8 levelSwitchStatus[0x40];
 u32 camx,camy;
 typedef struct {
