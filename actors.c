@@ -50,9 +50,9 @@ const T_StaticSprite staticSpriteData[] = {
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0240]},	//Player hand normal right
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x0280]},	//Player hand grab left
 	{	0,		0,		0xFFFF0000,	0x10000,	8,		8,			&playerGfx[0x02C0]},	//Player hand grab right
-	{	0,		0,		0x10000,	0x10000,	16,		32,			&doorGfx[0x0000]},		//Door closed
-	{	0,		0,		0x10000,	0x10000,	16,		32,			&doorGfx[0x0200]},		//Door mid
-	{	0,		0,		0x10000,	0x10000,	16,		32,			&doorGfx[0x0400]},		//Door open
+	{	0,		-16,	0x10000,	0x10000,	16,		32,			&doorGfx[0x0000]},		//Door closed
+	{	0,		-16,	0x10000,	0x10000,	16,		32,			&doorGfx[0x0200]},		//Door mid
+	{	0,		-16,	0x10000,	0x10000,	16,		32,			&doorGfx[0x0400]},		//Door open
 	{	0,		0,		0x10000,	0x10000,	16,		32,			NULL},					//(DUMMY FOR ALIGNMENT)
 	//20
 	{	0,		0,		0x10000,	0x10000,	16,		16,			&springGfx[0x0000]},	//Trampoline frame 1
@@ -531,7 +531,7 @@ u8 ah_collidebg(T_Actor * a) {
 	if(a->vx<=0) {
 		t1 = ah_gettile(cx1,cy1+0x40);
 		t2 = ah_gettile(cx1,cy2-0x40);
-		if(levelTsProps[t1]|levelTsProps[t2]) {
+		if(((levelTsProps[t1]&0x21)==0x21)|((levelTsProps[t2]&0x21)==0x21)) {
 			a->x += 0x100-(cx1&0xFF);
 			a->vx = 0;
 			res |= 1;
@@ -541,7 +541,7 @@ u8 ah_collidebg(T_Actor * a) {
 	if(a->vx>=0) {
 		t1 = ah_gettile(cx2,cy1+0x40);
 		t2 = ah_gettile(cx2,cy2-0x40);
-		if(levelTsProps[t1]|levelTsProps[t2]) {
+		if(((levelTsProps[t1]&0x21)==0x21)|((levelTsProps[t2]&0x21)==0x21)) {
 			a->x -= cx2&0xFF;
 			a->vx = 0;
 			res |= 2;
@@ -551,7 +551,7 @@ u8 ah_collidebg(T_Actor * a) {
 	if(a->vy<=0) {
 		t1 = ah_gettile(cx1+0x40,cy1);
 		t2 = ah_gettile(cx2-0x40,cy1);
-		if(levelTsProps[t1]|levelTsProps[t2]) {
+		if(((levelTsProps[t1]&0x21)==0x21)|((levelTsProps[t2]&0x21)==0x21)) {
 			a->y += 0x100-(cy1&0xFF);
 			a->vy = -a->vy;
 			res |= 4;
@@ -561,7 +561,7 @@ u8 ah_collidebg(T_Actor * a) {
 	if(a->vy>=0) {
 		t1 = ah_gettile(cx1+0x40,cy2);
 		t2 = ah_gettile(cx2-0x40,cy2);
-		if(levelTsProps[t1]|levelTsProps[t2]) {
+		if((levelTsProps[t1]&1)|(levelTsProps[t2]&1)) {
 			a->y -= cy2&0xFF;
 			a->vy = 0;
 			res |= 8;
@@ -571,7 +571,7 @@ u8 ah_collidebg(T_Actor * a) {
 	return res;
 }
 //Draw sprite tile
-void ah_drawtile(int x,int y,int id) {
+void ah_drawtile(int x,int y,int id,u8 layer) {
 	gfxDataSp[gfxUseSp] = staticSpriteData[id].graphic;
 	gfxSprites[gfxUseSp].s.objX			= (x+staticSpriteData[id].offsX)<<2;
 	gfxSprites[gfxUseSp].s.scaleW		= staticSpriteData[id].scaleX>>6;
@@ -587,6 +587,7 @@ void ah_drawtile(int x,int y,int id) {
 	gfxSprites[gfxUseSp].s.imageSiz		= G_IM_SIZ_16b;
 	gfxSprites[gfxUseSp].s.imagePal		= 0;
 	gfxSprites[gfxUseSp].s.imageFlags	= 0;
+	gfxLayerSp[gfxUseSp] = layer;
 	if(staticSpriteData[id].scaleX<0) {
 		gfxSprites[gfxUseSp].s.scaleW		= (-staticSpriteData[id].scaleX)>>6;
 		gfxSprites[gfxUseSp].s.imageFlags	|= G_OBJ_FLAG_FLIPS;
@@ -623,7 +624,7 @@ void ah_draw(T_Actor * a) {
 			ah_drawtile(
 				(a->x>>4)+compoundSpriteData[i].offsX+staticSpriteData[i2].offsX,
 				(a->y>>4)+compoundSpriteData[i].offsY+staticSpriteData[i2].offsY,
-				i2);
+				i2,a->sprLayer);
 			i++;
 		}
 	} else {
@@ -631,7 +632,7 @@ void ah_draw(T_Actor * a) {
 		ah_drawtile(
 			(a->x>>4)+staticSpriteData[id].offsX,
 			(a->y>>4)+staticSpriteData[id].offsY,
-			id);
+			id,a->sprLayer);
 	}
 }
 //Draw text character
@@ -651,6 +652,7 @@ void ah_drawchar(int x,int y,char c) {
 	gfxSprites[gfxUseSp].s.imageSiz		= G_IM_SIZ_16b;
 	gfxSprites[gfxUseSp].s.imagePal		= 0;
 	gfxSprites[gfxUseSp].s.imageFlags	= 0;
+	gfxLayerSp[gfxUseSp] = 3;
 	gfxUseSp++;
 }
 //Draw text
@@ -666,10 +668,10 @@ void ah_drawtext(int x,int y,char * str) {
 //Check position
 u8 ah_check(int x,int y) {
 	//Check all possible failure cases
-	if(x<camx) return 0;
-	if(y<camy) return 0;
-	if(x>=(camx+320)) return 0;
-	if(y>=(camy+240)) return 0;
+	if(x<camxL1) return 0;
+	if(y<camyL1) return 0;
+	if(x>=(camxL1+320)) return 0;
+	if(y>=(camyL1+240)) return 0;
 	//Return success
 	return 1;
 }
@@ -704,6 +706,7 @@ void actor_player_init(T_Actor * self) {
 	//Init animation
 	self->sprId = 0x00;
 	self->sprMode = 3;
+	self->sprLayer = 3;
 	//Init misc.
 	playerHP = 12;
 	playerMode = 0xFF;
@@ -754,7 +757,7 @@ void actor_player_main(T_Actor * self) {
 	if((self->temps[1]&0xFF)<1 && (self->temps[0]&8)==0 && self->y>0x100) {
 			 if(self->temps[0]&1 && ax<0) {
 			if(levelTsProps[ah_gettile(self->x-0xE0,self->y-0x100)]==0 &&
-			   levelTsProps[ah_gettile(self->x-0xE0,self->y)]) {
+			   levelTsProps[ah_gettile(self->x-0xE0,self->y)]&8) {
 				//Init ledge grab state
 				self->temps[1] = 0x801;
 				self->x &= ~0xFF;
@@ -764,7 +767,7 @@ void actor_player_main(T_Actor * self) {
 		}
 		else if(self->temps[0]&2 && ax>0) {
 			if(levelTsProps[ah_gettile(self->x+0xE0,self->y-0x100)]==0 &&
-			   levelTsProps[ah_gettile(self->x+0xE0,self->y)]) {
+			   levelTsProps[ah_gettile(self->x+0xE0,self->y)]&8) {
 				//Init ledge grab state
 				self->temps[1] = 0x001;
 				self->x &= ~0xFF;
@@ -909,9 +912,34 @@ void actor_player_main(T_Actor * self) {
 void actor_lever_init(T_Actor * self) {
 	//Mark inited
 	self->inited = 1;
+	//Init state
+	self->temps[0] = (self->param&0x80)>>7;
+	self->temps[1] = 0;
+	levelSwitchStatus[self->param&0x3F] = self->temps[0];
+	//Init collision info
+	self->cx1 =  0<<4;
+	self->cy1 =  0<<4;
+	self->cx2 = 16<<4;
+	self->cy2 = 16<<4;
+	//Init animation
+	self->sprId = self->temps[0]?0x0C:0x0E;
+	self->sprMode = 0;
+	self->sprLayer = 1;
 }
 void actor_lever_main(T_Actor * self) {
-	//TODO
+	//Handle player interaction
+	if(ah_collidepl(self)) {
+		//TODO
+	}
+	//Animate lever
+	if(self->temps[1]) {
+		//TODO
+	} else {
+		self->sprId = self->temps[0]?0x0C:0x0E;
+		self->sprMode = 0;
+		self->sprLayer = 1;
+	}
+	ah_draw(self);
 }
 //Door
 //[TEMPS USE]
@@ -920,9 +948,29 @@ void actor_lever_main(T_Actor * self) {
 void actor_door_init(T_Actor * self) {
 	//Mark inited
 	self->inited = 1;
+	//Init state
+	//TODO
+	//Init collision info
+	self->cx1 =   0<<4;
+	self->cy1 = -16<<4;
+	self->cx2 =  16<<4;
+	self->cy2 =  16<<4;
+	//Init animation
+	//TODO
+	self->sprLayer = 1;
 }
 void actor_door_main(T_Actor * self) {
-	//TODO
+	//Handle player interaction
+	if(ah_collidepl(self)) {
+		//TODO
+	}
+	//Animate door
+	if(self->temps[1]) {
+		//TODO
+	} else {
+		//TODO
+	}
+	ah_draw(self);
 }
 //Title sprites
 //[TEMPS USE]
@@ -932,7 +980,8 @@ void actor_title_init(T_Actor * self) {
 	self->inited = 1;
 	//Init animation
 	//self->sprId = 0;
-	//self->sprMode = 0;
+	self->sprMode = 1;
+	self->sprLayer = 1;
 }
 void actor_title_main(T_Actor * self) {
 	//Check for START press
@@ -1000,12 +1049,13 @@ void actor_over_main(T_Actor * self) {
 void actor_ending_init(T_Actor * self) {
 	//Mark inited
 	self->inited = 1;
+	//Init animation
+	//self->sprId = 0;
+	//self->sprMode = 0;
+	self->sprLayer = 1;
 }
 void actor_ending_main(T_Actor * self) {
 	//TODO
-	
-	
-	
 }
 //Ready sprites
 //[TEMPS USE]
@@ -1044,14 +1094,36 @@ void actor_ready_main(T_Actor * self) {
 }
 //Trampoline
 //[TEMPS USE]
-//TODO
+//0: Animation timer
 const int springHeightData[6] = {0x00,0x40,0x80,0x90,0x80,0x40};
 void actor_spring_init(T_Actor * self) {
 	//Mark inited
 	self->inited = 1;
+	//Init collision info
+	self->cx1 =  0<<4;
+	self->cy1 =  0<<4;
+	self->cx2 = 16<<4;
+	self->cy2 = 16<<4;
+	//Init animation
+	self->sprId = 0x20;
+	self->sprMode = 0;
+	self->sprLayer = 1;
 }
 void actor_spring_main(T_Actor * self) {
-	//TODO
+	//Handle player interaction
+	if(ah_collidepl(self)) {
+		//TODO
+	} else {
+		//TODO
+	}
+	//Animate trampoline
+	if(self->temps[0]) {
+		//TODO
+	} else {
+		self->sprId = 0x20;
+		self->sprMode = 0;
+	}
+	ah_draw(self);
 }
 
 
@@ -1071,6 +1143,14 @@ void (*actorInitFuncs[0x100])(T_Actor*) = {
 	actor_ending_init,	//06 (ending sprites)
 	actor_ready_init,	//07 (ready sprites)
 	actor_spring_init,	//08 (trampoline)
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	//10
 	//TODO
 };
 //ACTOR MAIN FUNCS
@@ -1085,6 +1165,14 @@ void (*actorMainFuncs[0x100])(T_Actor*) = {
 	actor_ending_main,	//06 (ending sprites)
 	actor_ready_main,	//07 (ready sprites)
 	actor_spring_main,	//08 (trampoline)
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	//10
 	//TODO
 };
 
@@ -1157,10 +1245,10 @@ void update_actors() {
 	if(actPlayer!=NULL) {
 		//Draw score
 		sprintf(strBuf,"%08d",playerScore);
-		ah_drawtext(camx,camy,strBuf);
+		ah_drawtext(camxL1,camyL1,strBuf);
 		//Draw lives
 		sprintf(strBuf,"$*%02d",playerLives);
-		ah_drawtext(0x100+camx,camy,strBuf);
+		ah_drawtext(0x100+camxL1,camyL1,strBuf);
 		//Draw HP
 		memset(strBuf,0,16);
 		for(i=0; i<6; i++) {
@@ -1169,6 +1257,6 @@ void update_actors() {
 			else if(thisId==1) strBuf[i] = 0x3D;
 			else               strBuf[i] = 0x3E;
 		}
-		ah_drawtext(0xE0+camx,0x10+camy,strBuf);
+		ah_drawtext(0xE0+camxL1,0x10+camyL1,strBuf);
 	}
 }

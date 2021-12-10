@@ -213,7 +213,7 @@ extern char _miditableSegmentRomStart[],	_miditableSegmentRomEnd[],	_miditableSe
 
 //Main game loop
 void main_loop(int nPendingGfxTasks) {
-	if(nPendingGfxTasks<3) {
+	if(nPendingGfxTasks<1) {
 		//Update graphics
 		update_gfx();
 	}

@@ -92,16 +92,15 @@ void clear_level() {
 	gfxUseBgL2 = 0;
 	actPlayer = NULL;
 	//Clear screen scroll
-	camx = 0;
-	camy = 0;
-	camxL1 = camx;
-	camyL1 = camy;
-	camxL2 = camx>>1;
-	camyL2 = camy>>1;
+	camxL1 = 0;
+	camyL1 = 0;
+	camxL2 = 0;
+	camyL2 = 0;
 }
 //Focus camera
 void focus_camera() {
 	int fx,fy;
+	u32 camx,camy;
 	//Focus camera
 	fx = (actPlayer->x>>4)+8;
 	fy = (actPlayer->y>>4)+8;
@@ -168,14 +167,14 @@ void load_level() {
 	//Init BG layers 1 and 2
 	for(j=0; j<=15; j++) {
 		for(i=0; i<=20; i++) {
-			idx  =  i+(camx>>4);
-			idx += (j+(camy>>4))*(levelWidth>>4);
+			idx  =  i+(camxL1>>4);
+			idx += (j+(camyL1>>4))*(levelWidth>>4);
 			gfxDataBgL1[gfxUseBgL1] = levelTileset[levelTilemap[idx]];
-			gfxBgLayer1[gfxUseBgL1].s.objX			= (i+(camx>>4))<<6;
+			gfxBgLayer1[gfxUseBgL1].s.objX			= (i+(camxL1>>4))<<6;
 			gfxBgLayer1[gfxUseBgL1].s.scaleW		= 1<<10;
 			gfxBgLayer1[gfxUseBgL1].s.imageW		= 16<<5;
 			gfxBgLayer1[gfxUseBgL1].s.paddingX		= 0;
-			gfxBgLayer1[gfxUseBgL1].s.objY			= (j+(camy>>4))<<6;
+			gfxBgLayer1[gfxUseBgL1].s.objY			= (j+(camyL1>>4))<<6;
 			gfxBgLayer1[gfxUseBgL1].s.scaleH		= 1<<10;
 			gfxBgLayer1[gfxUseBgL1].s.imageH		= 16<<5;
 			gfxBgLayer1[gfxUseBgL1].s.paddingY		= 0;
@@ -196,8 +195,8 @@ void load_level() {
 void update_level() {
 	int fx,fy;
 	int i,idx;
-	u32 camxPrev = camx;
-	u32 camyPrev = camy;
+	u32 camxPrev = camxL1;
+	u32 camyPrev = camyL1;
 	//Check to spawn actors
 	for(i=0; i<0x1000; i++) {
 		if(levelActors[i].id==0xFFFF) break;
@@ -213,15 +212,15 @@ void update_level() {
 	//Update screen scroll
 	focus_camera();
 	//Update BG layers 1 and 2
-	if((camxPrev&(~0xF))!=(camx&(~0xF))) {
-		if(camx>camxPrev) {
+	if((camxPrev&(~0xF))!=(camxL1&(~0xF))) {
+		if(camxL1>camxPrev) {
 			//Draw column right
-			fx = (camx>>4)+20;
+			fx = (camxL1>>4)+20;
 		} else {
 			//Draw column left
-			fx = (camx>>4);
+			fx = (camxL1>>4);
 		}
-		fy = (camy>>4);
+		fy = (camyL1>>4);
 		for(i=0; i<=15; i++) {
 			idx = (fx%21)+(((fy+i)%16)*21);
 			gfxDataBgL1[idx] = levelTileset[levelTilemap[fx+((fy+i)*(levelWidth>>4))]];
@@ -229,15 +228,15 @@ void update_level() {
 			gfxBgLayer1[idx].s.objY = (fy+i)<<6;
 		}
 	}
-	if((camyPrev&(~0xF))!=(camy&(~0xF))) {
-		if(camy>camyPrev) {
+	if((camyPrev&(~0xF))!=(camyL1&(~0xF))) {
+		if(camyL1>camyPrev) {
 			//Draw row down
-			fy = (camy>>4)+15;
+			fy = (camyL1>>4)+15;
 		} else {
 			//Draw row up
-			fy = (camy>>4);
+			fy = (camyL1>>4);
 		}
-		fx = (camx>>4);
+		fx = (camxL1>>4);
 		for(i=0; i<=20; i++) {
 			idx = ((fx+i)%21)+((fy%16)*21);
 			gfxDataBgL1[idx] = levelTileset[levelTilemap[(fx+i)+(fy*(levelWidth>>4))]];

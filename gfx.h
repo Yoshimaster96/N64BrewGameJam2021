@@ -17,6 +17,7 @@
 u16 gfxUseBgL1,gfxUseBgL2,gfxUseSp;
 u16 * gfxDataBgL1[0x180],* gfxDataSp[0x400];
 u16 * gfxDataBgL2;
+u8 gfxLayerSp[0x400];
 uObjSprite gfxBgLayer1[0x180];
 uObjBg gfxBgLayer2;
 uObjSprite gfxSprites[0x400];

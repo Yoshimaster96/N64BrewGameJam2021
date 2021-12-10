@@ -81,32 +81,26 @@ void load_segment(int segId) {
 		dest = (u32)segmentData[segId].dest;
 		src = (u32)segmentData[segId].start;
 		size = (u32)segmentData[segId].end-src;
-		osInvalDCache((void*)dest,size);
-		osPiStartDma(mqDmaBuf,OS_MESG_PRI_NORMAL,OS_READ,src,(void*)dest,size,&mqDma);
-		osRecvMesg(&mqDma,NULL,OS_MESG_BLOCK);
+		if(size!=0) {
+			osInvalDCache((void*)dest,size);
+			osPiStartDma(mqDmaBuf,OS_MESG_PRI_NORMAL,OS_READ,src,(void*)dest,size,&mqDma);
+			osRecvMesg(&mqDma,NULL,OS_MESG_BLOCK);
+		}
 		//Mark as loaded
 		loadedSegments[slot] = segId;
 	}
 }
 //Update graphics
 void update_gfx() {
-	int i;
+	int i,j;
 	//Handle camera (pre-process!)
-	/*if(gfxUseBgL2) {
-		gfxBgLayer2.s.objX -= camxL2<<2;
-		gfxBgLayer2.s.objY -= camyL2<<2;
-	}*/
 	for(i=0; i<gfxUseBgL1; i++) {
-		if(gfxDataBgL1[i]) {
-			gfxBgLayer1[i].s.objX -= camxL1<<2;
-			gfxBgLayer1[i].s.objY -= camyL1<<2;
-		}
+		gfxBgLayer1[i].s.objX -= camxL1<<2;
+		gfxBgLayer1[i].s.objY -= camyL1<<2;
 	}
 	for(i=0; i<gfxUseSp; i++) {
-		if(gfxDataSp[i]) {
-			gfxSprites[i].s.objX -= camxL1<<2;
-			gfxSprites[i].s.objY -= camyL1<<2;
-		}
+		gfxSprites[i].s.objX -= camxL1<<2;
+		gfxSprites[i].s.objY -= camyL1<<2;
 	}
 	//Init RDP for clearing
 	dlPtr = &dlBuf[bufferId][0];
@@ -129,6 +123,18 @@ void update_gfx() {
 		gDPPipeSync(dlPtr++);
 		gSPBgRect1Cyc(dlPtr++,OS_K0_TO_PHYSICAL(&gfxBgLayer2));
 	}*/
+	//Generate display list for sprites
+	for(i=0; i<gfxUseSp; i++) {
+		if(gfxDataSp[i] && gfxLayerSp[i]==0) {
+			gDPPipeSync(dlPtr++);
+			gDPLoadTextureBlock(dlPtr++,gfxDataSp[i],G_IM_FMT_RGBA,G_IM_SIZ_16b,
+				gfxSprites[i].s.imageW>>5,
+				gfxSprites[i].s.imageH>>5,
+				0,G_TX_WRAP|G_TX_NOMIRROR,G_TX_WRAP|G_TX_NOMIRROR,
+				G_TX_NOMASK,G_TX_NOMASK,G_TX_NOLOD,G_TX_NOLOD);
+			gSPObjRectangle(dlPtr++,OS_K0_TO_PHYSICAL(&gfxSprites[i]));
+		}
+	}
 	//Generate display list for BG layer 1
 	for(i=0; i<gfxUseBgL1; i++) {
 		if(gfxDataBgL1[i]) {
@@ -142,15 +148,17 @@ void update_gfx() {
 		}
 	}
 	//Generate display list for sprites
-	for(i=0; i<gfxUseSp; i++) {
-		if(gfxDataSp[i]) {
-			gDPPipeSync(dlPtr++);
-			gDPLoadTextureBlock(dlPtr++,gfxDataSp[i],G_IM_FMT_RGBA,G_IM_SIZ_16b,
-				gfxSprites[i].s.imageW>>5,
-				gfxSprites[i].s.imageH>>5,
-				0,G_TX_WRAP|G_TX_NOMIRROR,G_TX_WRAP|G_TX_NOMIRROR,
-				G_TX_NOMASK,G_TX_NOMASK,G_TX_NOLOD,G_TX_NOLOD);
-			gSPObjRectangle(dlPtr++,OS_K0_TO_PHYSICAL(&gfxSprites[i]));
+	for(j=1; j<=3; j++) {
+		for(i=0; i<gfxUseSp; i++) {
+			if(gfxDataSp[i] && gfxLayerSp[i]==j) {
+				gDPPipeSync(dlPtr++);
+				gDPLoadTextureBlock(dlPtr++,gfxDataSp[i],G_IM_FMT_RGBA,G_IM_SIZ_16b,
+					gfxSprites[i].s.imageW>>5,
+					gfxSprites[i].s.imageH>>5,
+					0,G_TX_WRAP|G_TX_NOMIRROR,G_TX_WRAP|G_TX_NOMIRROR,
+					G_TX_NOMASK,G_TX_NOMASK,G_TX_NOLOD,G_TX_NOLOD);
+				gSPObjRectangle(dlPtr++,OS_K0_TO_PHYSICAL(&gfxSprites[i]));
+			}
 		}
 	}
 	//End display list
@@ -161,21 +169,12 @@ void update_gfx() {
 	//Swap buffers
 	bufferId ^= 1;
 	//Handle camera (post-process!)
-	/*if(gfxUseBgL2) {
-		gfxBgLayer2.s.objX += camxL2<<2;
-		gfxBgLayer2.s.objY += camyL2<<2;
-	}*/
 	for(i=0; i<gfxUseBgL1; i++) {
-		if(gfxDataBgL1[i]) {
-			gfxBgLayer1[i].s.objX += camxL1<<2;
-			gfxBgLayer1[i].s.objY += camyL1<<2;
-		}
+		gfxBgLayer1[i].s.objX += camxL1<<2;
+		gfxBgLayer1[i].s.objY += camyL1<<2;
 	}
 	for(i=0; i<gfxUseSp; i++) {
-		if(gfxDataSp[i]) {
-			gfxSprites[i].s.objX += camxL1<<2;
-			gfxSprites[i].s.objY += camyL1<<2;
-		}
+		gfxSprites[i].s.objX += camxL1<<2;
+		gfxSprites[i].s.objY += camyL1<<2;
 	}
 }
-
