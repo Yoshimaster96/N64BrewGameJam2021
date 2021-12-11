@@ -9,80 +9,54 @@ typedef struct {
 	u16 ** tileset;
 	u8 * tsProps;
 	u8 * tilemap;
-	int width,height;
+	u16 width,height;
 	T_LevelActor * actors;
-	int startX,startY;
+	s32 startX,startY;
+	u8 bank;
+	u8 musicId;
 } T_LevelHeader;
 const T_LevelHeader headerData[] = {
-	//	BGIMG			TILESET			TSPROPS			TILEMAP			WIDTH	HEIGHT	ACTORS			STARTX	STARTY
+	//	BGIMG			TILESET			TSPROPS			TILEMAP			WIDTH	HEIGHT	ACTORS			STARTX	STARTY	BANK	MUSIC
 	//1
-	{	level1BgImg,	level1Tileset,	level1TsProps,	level1Tilemap,	120,	32,		level1Actors,	0x0030,	0x01E0},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
+	{	level1BgImg,	level1Tileset,	level1TsProps,	level1Tilemap,	120,	32,		level1Actors,	0x0030,	0x01E0,	4,		8},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
 	//2
-	/*{	level2BgImg,	level2Tileset,	level2TsProps,	level2Tilemap,	20,		15,		level2Actors,	0x0010,	0x00C0},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},*/
+	/*{	level1BgImg,	level1Tileset,	level1TsProps,	level2Tilemap,	20,		15,		level2Actors,	0x0010,	0x00C0,	4,		8},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
 	//3
-	/*{	level3BgImg,	level3Tileset,	level3TsProps,	level3Tilemap,	20,		15,		level3Actors,	0x0010,	0x00C0},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},*/
+	/*{	level3BgImg,	level3Tileset,	level3TsProps,	level3Tilemap,	20,		15,		level3Actors,	0x0010,	0x00C0,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
 	//4
-	/*{	level4BgImg,	level4Tileset,	level4TsProps,	level4Tilemap,	20,		15,		level4Actors,	0x0010,	0x00C0},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},
-	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000},*/
+	/*{	level4BgImg,	level4Tileset,	level4TsProps,	level4Tilemap,	20,		15,		level4Actors,	0x0010,	0x00C0,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
+	//5
+	/*{	level1BgImg,	level1Tileset,	level1TsProps,	level5Tilemap,	20,		15,		level5Actors,	0x0010,	0x00C0,	4,		8},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
+	//6
+	/*{	level6BgImg,	level6Tileset,	level6TsProps,	level6Tilemap,	20,		15,		level6Actors,	0x0010,	0x00C0,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
+	//7
+	/*{	level7BgImg,	level7Tileset,	level7TsProps,	level7Tilemap,	20,		15,		level7Actors,	0x0010,	0x00C0,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
+	//8
+	/*{	level8BgImg,	level8Tileset,	level8TsProps,	level8Tilemap,	20,		15,		level8Actors,	0x0010,	0x00C0,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},
+	{	NULL,			NULL,			NULL,			NULL,			0,		0,		NULL,			0x0000,	0x0000,	0,		0},*/
 };
 
 //Clear level
@@ -140,10 +114,9 @@ void load_level() {
 	gfxUseBgL1 = 0;
 	gfxUseBgL2 = 0;
 	gfxUseSp = 0;
-	//Load level segment
-	load_segment(levelNum+4);
 	//Setup level
-	idx = (levelNum<<4)|areaNum;
+	idx = (levelNum<<2)|areaNum;
+	load_segment(headerData[idx].bank);
 	levelBgImage	= headerData[idx].bgImg;
 	levelTileset	= headerData[idx].tileset;
 	levelTsProps	= headerData[idx].tsProps;
@@ -154,12 +127,12 @@ void load_level() {
 	memset(levelActorStatus,0,0x100);
 	memset(levelSwitchStatus,0,0x40);
 	memset(actorList,0,0x100*sizeof(T_Actor));
-	load_bgm(8+levelNum);
+	load_bgm(headerData[idx].musicId);
 	//Init player
 	actorList[0].id		= 0x0001;
 	actorList[0].param	= 0x00;
-	actorList[0].x		= headerData[levelNum].startX<<4;
-	actorList[0].y		= headerData[levelNum].startY<<4;
+	actorList[0].x		= headerData[idx].startX<<4;
+	actorList[0].y		= headerData[idx].startY<<4;
 	actorList[0].link	= 0xFFFF;
 	actPlayer = &actorList[0];
 	//Init screen scroll

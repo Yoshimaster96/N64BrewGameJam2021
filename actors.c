@@ -1013,20 +1013,27 @@ const char gameOverText[16] = {
 const int gameOverXPos[8] = {0x58,0x68,0x78,0x88,0xA8,0xB8,0xC8,0xD8};
 int calc_game_over_ypos(int t) {
 	int dy;
+	//Check to clamp animation start
 	if(t<0) return -0x20;
 	else if(t<0x20) {
-		dy = t*t;
+		//Bounce 1
+		dy = (t-0x00)*(t-0x00);
 		return (0x60-0x80)+(dy>>3);
 	} else if(t<0x40) {
+		//Bounce 2
 		dy = (t-0x30)*(t-0x30);
 		return (0x60-0x20)+(dy>>3);
 	} else if(t<0x50) {
+		//Bounce 3
 		dy = (t-0x48)*(t-0x48);
 		return (0x60-0x08)+(dy>>3);
 	} else if(t<0x58) {
+		//Bounce 4
 		dy = (t-0x54)*(t-0x54);
 		return (0x60-0x02)+(dy>>3);
-	} else return 0x60;
+	}
+	//Check to clamp animation end
+	else return 0x60;
 }
 void actor_over_init(T_Actor * self) {
 	//Mark inited
@@ -1060,12 +1067,16 @@ void actor_ending_main(T_Actor * self) {
 //Ready sprites
 //[TEMPS USE]
 //0: Group animation timer
-const char levelNameData[4][16] = {
+const char levelNameData[8][16] = {
 	//234567890123456
 	"   LEVEL1NAME",
 	"   LEVEL2NAME",
 	"   LEVEL3NAME",
 	"   LEVEL4NAME",
+	"   LEVEL5NAME",
+	"   LEVEL6NAME",
+	"   LEVEL7NAME",
+	"   LEVEL8NAME",
 };
 void actor_ready_init(T_Actor * self) {
 	//Mark inited
@@ -1087,7 +1098,6 @@ void actor_ready_main(T_Actor * self) {
 	sprintf(strBuf,"$*%02d",playerLives);
 	ax = (0xE0+0xA0)-((self->temps[0]-0x30)<<3);
 	if(ax<0xA0) ax = 0xA0;
-	self->y = ax<<4;
 	ah_drawtext(0x80,ax,strBuf);
 	//Update animation timer
 	self->temps[0]++;

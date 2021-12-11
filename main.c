@@ -86,6 +86,7 @@ void gm_play_main() {
 //Level ending
 void gm_death_init() {
 	//Init death
+	actPlayer->vx = 0;
 	actPlayer->vy = -0x40;
 	load_bgm(4);
 	//Go to next task
@@ -120,7 +121,7 @@ void gm_goal_main() {
 	if(gameModeTimer>180) {
 		//Go to next task
 		levelNum++;
-		if(levelNum>4) gameMode = 0x0E;
+		if(levelNum>8) gameMode = 0x0E;
 		else           gameMode = 0x04;
 	}
 }
@@ -260,6 +261,9 @@ void mainproc() {
 	/*nuAuSndPlayerBankSet(_sfxbankSegmentRomStart,
 		_sfxbankSegmentRomEnd-_sfxbankSegmentRomStart,
 		_sfxtableSegmentRomStart);*/
+	//Reset game mode
+	gameMode = 0x00;
+	gameModeTimer = 0;
 	//Main game loop
 	nuGfxFuncSet((NUGfxFunc)main_loop);
 	while(1);

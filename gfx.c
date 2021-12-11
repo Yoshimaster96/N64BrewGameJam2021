@@ -79,7 +79,7 @@ void load_segment(int segId) {
 	if(loadedSegments[slot]!=segId) {
 		//Copy data
 		dest = (u32)segmentData[segId].dest;
-		src = (u32)segmentData[segId].start;
+		src  = (u32)segmentData[segId].start;
 		size = (u32)segmentData[segId].end-src;
 		if(size!=0) {
 			osInvalDCache((void*)dest,size);
@@ -166,6 +166,7 @@ void update_gfx() {
 	gSPEndDisplayList(dlPtr++);
 	//Send display list to RSP
 	nuGfxTaskStart(&dlBuf[bufferId][0],(s32)(dlPtr-dlBuf[bufferId])*sizeof(Gfx),NU_GFX_UCODE_S2DEX2,NU_SC_SWAPBUFFER);
+	nuGfxTaskAllEndWait();
 	//Swap buffers
 	bufferId ^= 1;
 	//Handle camera (post-process!)
